@@ -1,26 +1,135 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #121212;  
+  --foreground: #e0e0e0; 
+  --card: #1e1e1e;        
+  --card-foreground: #ffffff; 
+  --accent: #1e88e5;     
+  
+  /* blue palette */
+  --blue-50:  #e3f2fd;
+  --blue-100: #bbdefb;
+  --blue-200: #90caf9;
+  --blue-300: #64b5f6;
+  --blue-400: #42a5f5;
+  --blue-500: #2196f3;
+  --blue-600: #1e88e5;
+  --blue-700: #1976d2;
+  --blue-800: #1565c0;
+  --blue-900: #0d47a1;
+  
+  /* Border and Effect Variables */
+  --border: #272727;
+  --input: #1e1e1e;
+  --ring: var(--accent);
+  --radius: 0.5rem;
+  
+  /* Status Colors */
+  --success: #66bb6a;
+  --warning: #ffa726;
+  --error: #ef5350;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--accent);
+  --color-secondary: var(--blue-700);
+  --color-accent: var(--blue-600);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: #050A20; /* fallback color */
+  position: relative;
+  overflow-x: hidden;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  margin: 1rem;
+  background-color: rgba(10, 20, 50, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.bg-gradient-hero {
+  background: linear-gradient(135deg, var(--blue-800), var(--background));
+}
+
+.bg-gradient-subtle {
+  background: linear-gradient(90deg, var(--background), var(--blue-900));
+}
+
+/* Blue Theme Util */
+.bg-blue-primary {
+  background-color: var(--accent);
+}
+
+.bg-blue-light {
+  background-color: var(--blue-400);
+}
+
+.bg-blue-dark {
+  background-color: var(--blue-900);
+}
+
+.text-blue-primary {
+  color: var(--accent);
+}
+
+.text-blue-light {
+  color: var(--blue-400);
+}
+
+.text-blue-dark {
+  color: var(--blue-900);
+}
+
+/* Extended Util */
+.text-gradient {
+  background: linear-gradient(90deg, var(--blue-500), var(--blue-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-glow {
+  box-shadow: 0 0 15px rgba(30, 136, 229, 0.6);
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+#background-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.relative {
+  position: relative;
+  z-index: 1;
 }
