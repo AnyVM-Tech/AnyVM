@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import BackgroundWrapper from "./components/BackgroundWrapper";
+import ClientImageOverlay from "./components/ClientImageOverlay";
 
 const dmSans = DM_Sans({
   variable: "--font-sans",
@@ -26,7 +27,8 @@ export default function RootLayout({
         className={`${dmSans.variable} antialiased relative`}
       >
         <BackgroundWrapper />
-        <div className="relative">
+        <ClientImageOverlay src="/sample.png" />
+        <div className="relative z-10">
           {children}
         </div>
       </body>

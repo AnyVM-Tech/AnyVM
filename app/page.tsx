@@ -7,10 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./components/button";
 import Marquee from "react-fast-marquee";
 import { Footer } from "./components/footer";
-import Lenis from "@studio-freight/lenis";
+import Lenis from "lenis";
 import { Separator } from "@radix-ui/react-separator";
 import { toast, Toaster } from "react-hot-toast";
 import { create } from "zustand";
+import ThreeCanvas from "./components/ThreeCanvas";
 
 interface ProductState {
   currentProductIndex: number;
@@ -24,6 +25,7 @@ const useProductStore = create<ProductState>((set) => ({
 
 export default function Home() {
   const { currentProductIndex, setCurrentProductIndex } = useProductStore();
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   
   const products = [
     {
@@ -48,7 +50,6 @@ export default function Home() {
     }
   ];
 
-  // smooth scrolling
   useEffect(() => {
     const lenis = new Lenis({
         duration: 1.2,
@@ -124,6 +125,15 @@ export default function Home() {
               </div>
             </motion.div>
             
+            {/* Add ThreeCanvas here */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="h-[400px] lg:h-[500px] rounded-xl overflow-hidden"
+            >
+              <ThreeCanvas className="w-full h-full" />
+            </motion.div>
           
           </div>
         </div>
@@ -291,8 +301,10 @@ export default function Home() {
               <motion.div
                 key={index}
                 whileHover={{ y: -10 }}
-                className={`card transition-all card-hover product-card ${
-                  product.suffix === currentProduct.suffix 
+                onHoverStart={() => setHoveredIndex(index)}
+                onHoverEnd={() => setHoveredIndex(null)}
+                className={`card transition-all product-card ${
+                  hoveredIndex === index
                     ? "border-2 border-blue-primary border-glow bg-blue-800" 
                     : ""
                 }`}
