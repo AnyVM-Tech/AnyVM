@@ -1,68 +1,117 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-size-sm: 0.750rem;
+  --font-size-base: 1rem;
+  --font-size-xl: 1.333rem;
+  --font-size-2xl: 1.777rem;
+  --font-size-3xl: 2.369rem;
+  --font-size-4xl: 3.158rem;
+  --font-size-5xl: 4.210rem;
+
+  --font-family-heading: 'Chivo Mono', monospace;
+  --font-family-body: 'Chivo Mono', monospace;
+
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+}
+
 :root {
-  --background: #121212;  
-  --foreground: #e0e0e0; 
-  --card: #1e1e1e;        
-  --card-foreground: #ffffff; 
-  --accent: #1e88e5;     
-  
-  /* blue palette */
-  --blue-50:  #e3f2fd;
-  --blue-100: #bbdefb;
-  --blue-200: #90caf9;
-  --blue-300: #64b5f6;
-  --blue-400: #42a5f5;
-  --blue-500: #2196f3;
-  --blue-600: #1e88e5;
-  --blue-700: #1976d2;
-  --blue-800: #1565c0;
-  --blue-900: #0d47a1;
-  
-  /* Border and Effect Variables */
-  --border: #272727;
-  --input: #1e1e1e;
-  --ring: var(--accent);
-  --radius: 0.5rem;
-  
+  /* Dark Color Scheme - AnyVM Brand */
+  --text: rgb(223, 227, 237);
+  --background: rgb(4, 6, 10);
+  --primary: rgb(21, 80, 229);
+  --secondary: rgb(20, 55, 143);
+  --accent: rgb(42, 99, 245);
+
+  /* Component Variables */
+  --card: rgba(21, 80, 229, 0.1);
+  --card-foreground: rgb(223, 227, 237);
+  --popover: rgba(4, 6, 10, 0.95);
+  --popover-foreground: rgb(223, 227, 237);
+  --primary-foreground: rgb(223, 227, 237);
+  --secondary-foreground: rgb(223, 227, 237);
+  --muted: rgba(223, 227, 237, 0.1);
+  --muted-foreground: rgba(223, 227, 237, 0.6);
+  --accent-foreground: rgb(223, 227, 237);
+  --foreground: rgb(223, 227, 237);
+
+  /* Border and Input Variables */
+  --border: rgba(223, 227, 237, 0.1);
+  --input: rgba(21, 80, 229, 0.2);
+  --ring: rgb(42, 99, 245);
+  --radius: 0.75rem;
+
   /* Status Colors */
   --success: #66bb6a;
   --warning: #ffa726;
   --error: #ef5350;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--accent);
-  --color-secondary: var(--blue-700);
-  --color-accent: var(--blue-600);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --destructive: #ef5350;
+  
+  /* Chart colors */
+  --chart-1: rgb(21, 80, 229);
+  --chart-2: rgb(42, 99, 245);
+  --chart-3: rgb(20, 55, 143);
+  --chart-4: rgb(223, 227, 237);
+  --chart-5: rgba(223, 227, 237, 0.6);
+  
+  /* Sidebar */
+  --sidebar: rgba(4, 6, 10, 0.95);
+  --sidebar-foreground: rgb(223, 227, 237);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+  background-color: rgb(4, 6, 10); /* fallback color matching --background */
+  color: var(--text);
+  font-family: 'Chivo Mono', monospace;
+  font-weight: 400;
   min-height: 100vh;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  background-color: #050A20; /* fallback color */
   position: relative;
-  overflow-x: hidden;
 }
 
+/* Apply Chivo Mono globally */
+* {
+  font-family: 'Chivo Mono', monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Chivo Mono', monospace;
+  font-weight: 700;
+}
+
+/* Custom Typography Classes */
+.text-sm { font-size: 0.750rem; }
+.text-base { font-size: 1rem; }
+.text-xl { font-size: 1.333rem; }
+.text-2xl { font-size: 1.777rem; }
+.text-3xl { font-size: 2.369rem; }
+.text-4xl { font-size: 3.158rem; }
+.text-5xl { font-size: 4.210rem; }
+
+.font-heading { font-family: 'Chivo Mono', monospace; }
+.font-body { font-family: 'Chivo Mono', monospace; }
+.font-normal { font-weight: 400; }
+.font-bold { font-weight: 700; }
+
 .card {
-  background: var(--card);
-  color: var(--card-foreground);
-  border: 1px solid var(--border);
+  background: rgba(4, 6, 10, 0.8);
+  color: var(--text);
+  border: 1px solid rgba(223, 227, 237, 0.1);
   border-radius: var(--radius);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   padding: 1rem;
   margin: 1rem;
-  background-color: rgba(10, 20, 50, 0.6);
   backdrop-filter: blur(8px);
 }
 
@@ -169,4 +218,114 @@ body {
   display: block;
   margin: 0 auto;
   transform-origin: top center;
+}
+
+/* Placeholder styling for email input */
+input::placeholder {
+  color: rgba(223, 227, 237, 0.6);
+}
+
+/* Hero text glow effect */
+.hero-glow {
+  text-shadow: 
+    0 0 20px rgba(71, 185, 231, 0.5),
+    0 0 40px rgba(55, 161, 226, 0.4),
+    0 0 60px rgba(36, 114, 183, 0.3);
+  animation: glow-pulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse {
+  from {
+    text-shadow: 
+      0 0 20px rgba(71, 185, 231, 0.5),
+      0 0 40px rgba(55, 161, 226, 0.4),
+      0 0 60px rgba(36, 114, 183, 0.3);
+  }
+  to {
+    text-shadow: 
+      0 0 30px rgba(71, 185, 231, 0.8),
+      0 0 60px rgba(55, 161, 226, 0.6),
+      0 0 80px rgba(36, 114, 183, 0.5);
+  }
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

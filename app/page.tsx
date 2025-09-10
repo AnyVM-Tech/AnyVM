@@ -2,356 +2,247 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { FiServer, FiCpu, FiGlobe, FiCode, FiArrowRight } from "react-icons/fi";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "./components/button";
-import Marquee from "react-fast-marquee";
-import { Footer } from "./components/footer";
-import Lenis from "lenis";
-import { Separator } from "@radix-ui/react-separator";
+import { FiArrowRight, FiGithub, FiMail, FiClock } from "react-icons/fi";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { toast, Toaster } from "react-hot-toast";
-import { create } from "zustand";
-import ThreeCanvas from "./components/ThreeCanvas";
 
-interface ProductState {
-  currentProductIndex: number;
-  setCurrentProductIndex: (index: number) => void;
-}
+export default function ComingSoon() {
+  const [email, setEmail] = useState("");
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
 
-const useProductStore = create<ProductState>((set) => ({
-  currentProductIndex: 0,
-  setCurrentProductIndex: (index) => set({ currentProductIndex: index }),
-}));
-
-export default function Home() {
-  const { currentProductIndex, setCurrentProductIndex } = useProductStore();
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  
-  const products = [
-    {
-      suffix: "VM",
-      description: "Virtual Private Server hosting with seamless scaling and deployment options.",
-      icon: <FiServer className="text-blue-primary text-2xl" />
-    },
-    {
-      suffix: "GPT",
-      description: "AI API service featuring powerful language models for your applications.",
-      icon: <FiCpu className="text-blue-primary text-2xl" />
-    },
-    {
-      suffix: "Web",
-      description: "Web proxy service ensuring secure and efficient content delivery.",
-      icon: <FiGlobe className="text-blue-primary text-2xl" />
-    },
-    {
-      suffix: "Code",
-      description: "Deployment platform for continuous integration and delivery.",
-      icon: <FiCode className="text-blue-primary text-2xl" />
-    }
-  ];
+  // Launch date: November 1, 2025
+  const launchDate = new Date('2025-11-01T00:00:00').getTime();
 
   useEffect(() => {
-    const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: 'vertical',
-        smoothWheel: true,
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      if (distance > 0) {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000)
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [launchDate]);
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      toast.success("Thanks! We'll notify you when we launch!", { 
+        icon: '🚀',
+        duration: 4000 
       });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+      setEmail("");
     }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  useEffect(() => {
-    // Simple product rotation interval
-    const interval = setInterval(() => {
-      setCurrentProductIndex((currentProductIndex + 1) % products.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [currentProductIndex, products.length, setCurrentProductIndex]);
-
-  const currentProduct = products[currentProductIndex];
-
-  const handleGetStarted = () => {
-    toast.success("Welcome aboard! Let's get started.", {
-      icon: '🚀',
-      duration: 4000,
-    });
   };
 
+  const services = [
+    { name: "AnyVM", desc: "VPS Hosting", icon: "🖥️" },
+    { name: "AnyGPT", desc: "AI API", icon: "🤖" },
+    { name: "AnyWeb", desc: "Web Proxy", icon: "🌐" },
+    { name: "AnyCode", desc: "Deployment", icon: "⚡" }
+  ];
+
   return (
-    <div className="min-h-screen font-[var(--font-sans)]">
+    <div 
+      className="min-h-screen font-['Chivo_Mono'] relative overflow-hidden bg-background text-foreground"
+    >
       {/* Toast notifications */}
       <Toaster position="top-center" />
       
-      {/* Hero Section - adjusted to be more transparent */}
-      <header className="relative py-36 px-8 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/30"></div>
-        <div className="relative z-10 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="flex flex-col gap-8 items-start"
-            >
-              <h1 className="text-6xl md:text-7xl font-bold tracking-tight">
-                Make the Cloud <span className="text-blue-light">Open Source</span>
-              </h1>
-              <p className="text-xl md:text-2xl max-w-3xl opacity-90">
-                Experience transparent, accessible cloud services without vendor lock-in.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                <Button 
-                  className="bg-white text-blue-primary hover:bg-blue-100 text-lg py-6 px-12 rounded-full"
-                  onClick={handleGetStarted}
-                >
-                  Get Started
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border border-blue-primary text-white hover:bg-blue-900/50 text-lg py-6 px-12 rounded-full"
-                >
-                  View Products
-                </Button>
-              </div>
-            </motion.div>
-            
-            {/* Add ThreeCanvas here */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className="h-[400px] lg:h-[500px] rounded-xl overflow-hidden"
-            >
-              <ThreeCanvas className="w-full h-full" />
-            </motion.div>
-          
-          </div>
-        </div>
-      </header>
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 left-20 w-72 h-72 rounded-full mix-blend-multiply filter blur-xl animate-pulse bg-primary"></div>
+        <div className="absolute top-40 right-20 w-72 h-72 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000 bg-accent"></div>
+        <div className="absolute -bottom-8 left-1/2 w-72 h-72 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-500 bg-secondary"></div>
+      </div>
 
-      {/* Services Banner */}
-      <Marquee className="bg-blue-dark/80 backdrop-blur-sm text-white py-3" speed={40} gradient={false}>
-        <div className="flex gap-16 mx-8">
-          <span>VPS Hosting</span>
-          <span>•</span>
-          <span>Web Proxy</span>
-          <span>•</span>
-          <span>AI API</span>
-          <span>•</span>
-          <span>Deployment Platform</span>
-          <span>•</span>
-          <span>Open Source Cloud</span>
-          <span>•</span>
-        </div>
-      </Marquee>
-
-      {/* Product Carousel Section */}
-      <section className="py-24 px-8 bg-gradient-to-b from-transparent to-blue-900/70 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16 flex flex-col items-center">
-            <motion.div
-              className="flex items-center text-5xl md:text-7xl font-bold"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="text-blue-primary">Any</span>
-              <div className="h-[80px] overflow-hidden ml-2">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentProductIndex}
-                    initial={{ y: 80, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -80, opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="text-white"
-                  >
-                    {currentProduct.suffix}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Product Detail Card */}
-          <div className="flex flex-col md:flex-row gap-14 items-center">
-            <motion.div
-              key={`desc-${currentProductIndex}`}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex-1"
-            >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`product-title-${currentProductIndex}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="card p-8 backdrop-blur-sm"
-                >
-                  <div className="flex items-center mb-6">
-                    <div className="bg-blue-primary p-3 rounded-full w-14 h-14 flex items-center justify-center mr-4">
-                      {currentProduct.icon}
-                    </div>
-                    <h3 className="text-2xl font-bold text-white">
-                      Any{currentProduct.suffix}
-                    </h3>
-                  </div>
-                  <p className="text-lg text-foreground/80 mb-8">
-                    {currentProduct.description}
-                  </p>
-                  <Button className="bg-blue-primary text-white hover:bg-blue-600 group"
-                    onClick={() => toast.success(`Exploring Any${currentProduct.suffix}!`)}>
-                    <span>Learn More</span>
-                    <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </motion.div>
-              </AnimatePresence>
-            </motion.div>
-
-            {/* Card for video placeholder */}
-            <motion.div
-              key={`video-${currentProductIndex}`}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex-1 aspect-video"
-            >
-              <div className="card rounded-xl shadow-lg overflow-hidden h-full">
-                <div className="w-full h-full flex items-center justify-center bg-blue-light">
-                  <p className="text-blue-dark text-lg font-medium">
-                    Any{currentProduct.suffix} Demo Video
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Dots Navigation */}
-          <div className="flex justify-center mt-14 gap-3">
-            {products.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentProductIndex(idx)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  idx === currentProductIndex ? "bg-blue-primary" : "bg-blue-dark"
-                }`}
-                aria-label={`View Any${products[idx].suffix}`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Values Section */}
-      <section className="py-24 px-8 bg-transparent values-section">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="mb-20">
-            <div className="inline-block px-3 py-1 rounded-full bg-blue-dark/50 backdrop-blur-sm border border-blue-800/60 mb-6">
-              <span className="text-blue-300 text-sm font-medium">Our Philosophy</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white values-title">
-              Centralized. Modern. Innovative. <span className="text-gradient">Open Source</span>.
-            </h2>
-            <p className="text-lg max-w-3xl mx-auto text-foreground/80">
-              We are dedicated to creating modern cloud services that are centralized, innovative, and transparent.
-            </p>
-          </div>
-          
-          <Separator className="bg-blue-900/50 h-[1px] w-full my-10" />
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            {["Transparent", "Scalable", "Community-Driven"].map((value, i) => (
-              <motion.div 
-                key={value}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="p-6 bg-blue-dark/30 rounded-xl backdrop-blur-sm"
-              >
-                <h3 className="text-xl font-bold mb-3 text-white">{value}</h3>
-                <p className="text-foreground/80">
-                  Our commitment to {value.toLowerCase()} solutions means you're always in control.
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Products Grid Section */}
-      <section className="py-16 px-8 bg-blue-light/80 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center text-blue-dark">Our Products</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 products-grid">
-            {products.map((product, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ y: -10 }}
-                onHoverStart={() => setHoveredIndex(index)}
-                onHoverEnd={() => setHoveredIndex(null)}
-                className={`card transition-all product-card ${
-                  hoveredIndex === index
-                    ? "border-2 border-blue-primary border-glow bg-blue-800" 
-                    : ""
-                }`}
-              >
-                <div className="bg-blue-primary p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6">
-                  {product.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-white">Any{product.suffix}</h3>
-                <p className="text-foreground/80 mb-4 text-sm">
-                  {product.description}
-                </p>
-                <Link 
-                  href={`/${product.suffix.toLowerCase()}`} 
-                  className="text-blue-primary font-medium hover:underline"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toast(`Navigating to Any${product.suffix}`, { icon: '🔗' });
-                  }}
-                >
-                  Learn more →
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 px-8 bg-gradient-to-br from-blue-primary/90 to-blue-light/90 backdrop-blur-sm text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Join Our Mission to Make the Cloud Open Source
-          </h2>
-          <p className="text-xl mb-10 opacity-90">
-            Experience innovative, transparent, and accessible cloud services.
-          </p>
-          <Button 
-            className="bg-white text-blue-primary hover:bg-blue-100 text-lg py-6 px-10 rounded-full"
-            onClick={handleGetStarted}
+      {/* Main Content */}
+      <div className="relative z-10 min-h-screen flex flex-col">
+        
+        {/* Header */}
+        <header className="pt-8 px-8">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex justify-between items-center max-w-6xl mx-auto"
           >
-            Get Started for Free
-          </Button>
-        </div>
-      </section>
+            <div className="flex items-center space-x-4">
+              <Image 
+                src="/AnyVM-logo.svg" 
+                alt="AnyVM Technologies" 
+                width={60} 
+                height={60}
+                className="drop-shadow-lg"
+              />
+              <h1 className="text-2xl font-bold text-foreground">
+                AnyVM Technologies
+              </h1>
+            </div>
+            
+            <Link 
+              href="https://github.com/anyvm-tech" 
+              target="_blank"
+              className="transition-colors text-muted-foreground hover:text-foreground"
+            >
+              <FiGithub className="w-6 h-6" />
+            </Link>
+          </motion.div>
+        </header>
 
-      {/* Footer */}
-      <Footer />
+        {/* Main Section */}
+        <main className="flex-1 flex items-center justify-center px-8 py-16">
+          <div className="max-w-6xl mx-auto text-center">
+            
+            {/* Hero Content */}
+            <div className="mb-16">
+              <Badge variant="outline" className="mb-8 px-6 py-3 text-base bg-card/50 border-primary/30 text-foreground">
+                <FiClock className="mr-2" />Coming Soon
+              </Badge>
+              <h2 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight text-foreground">
+                Make the cloud
+                <br />
+                <span className="bg-gradient-to-r from-[#47b9e7] via-[#37a1e2] to-[#2472b7] bg-clip-text text-transparent hero-glow relative">
+                  open-source
+                </span>
+              </h2>
+              <p className="text-2xl md:text-3xl mb-12 max-w-4xl mx-auto leading-relaxed font-normal text-muted-foreground">
+                We're building innovative cloud services that put developers first. From reliable VPS hosting to cutting-edge AI APIs.
+              </p>
+            </div>
+
+            {/* Countdown Timer */}
+            <div className="mb-16">
+              <h3 className="text-2xl mb-8 font-normal text-foreground">Launching in:</h3>
+              <div className="grid grid-cols-4 gap-6 max-w-2xl mx-auto">
+                {[
+                  { label: 'Days', value: timeLeft.days },
+                  { label: 'Hours', value: timeLeft.hours },
+                  { label: 'Minutes', value: timeLeft.minutes },
+                  { label: 'Seconds', value: timeLeft.seconds }
+                ].map((item, index) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                  >
+                    <Card className="bg-card border-primary/20 rounded-2xl p-6 hover:bg-card/80 transition-all">
+                      <CardTitle className="text-4xl md:text-5xl font-bold mb-3 text-foreground">{String(item.value).padStart(2, '0')}</CardTitle>
+                      <CardDescription className="text-base font-normal">{item.label}</CardDescription>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Services Preview */}
+            <div className="mb-16">
+              <h3 className="text-2xl mb-10 font-normal text-foreground">What's Coming:</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                {services.map((service, index) => (
+                  <motion.div
+                    key={service.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 1 + index * 0.1 }}
+                  >
+                    <Card className="bg-card border-primary/20 rounded-xl p-6 hover:bg-card/80 hover:border-primary/40 transition-all cursor-pointer">
+                      <div className="text-3xl mb-4">{service.icon}</div>
+                      <CardTitle className="font-bold text-base mb-2 text-foreground">{service.name}</CardTitle>
+                      <CardDescription className="text-sm font-normal">{service.desc}</CardDescription>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Email Signup */}
+            <Card className="max-w-lg mx-auto bg-card border-primary/20">
+              <CardHeader>
+                <CardTitle className="text-2xl mb-6 font-normal text-foreground">Get Early Access</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleEmailSubmit} className="space-y-6">
+                  <div className="relative">
+                    <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-muted-foreground" />
+                    <Input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email address"
+                      className="pl-14 pr-4 py-4 h-14 text-base font-normal bg-input border-primary/20 text-foreground placeholder:text-muted-foreground"
+                      required
+                    />
+                  </div>
+                  <Button type="submit" size="lg" className="w-full font-bold py-4 h-14 rounded-xl text-lg bg-primary hover:bg-primary/90 text-primary-foreground">
+                    Notify Me at Launch
+                    <FiArrowRight className="ml-2 w-6 h-6" />
+                  </Button>
+                </form>
+                <p className="text-sm mt-6 font-normal text-muted-foreground text-center">
+                  No spam, just updates on our launch and early access opportunities.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
+
+        {/* Footer */}
+        <footer className="pb-8 px-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1.4 }}
+            className="max-w-6xl mx-auto text-center"
+          >
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <p className="text-sm font-normal text-muted-foreground">
+                © 2025 AnyVM Technologies. Building the future of open source cloud.
+              </p>
+              <div className="flex space-x-6">
+                <Link 
+                  href="https://github.com/anyvm-tech" 
+                  target="_blank"
+                  className="text-sm font-normal transition-colors text-muted-foreground hover:text-foreground"
+                >
+                  GitHub
+                </Link>
+                <Link 
+                  href="https://github.com/anyvm-tech/anygpt" 
+                  target="_blank"
+                  className="text-sm font-normal transition-colors text-muted-foreground hover:text-foreground"
+                >
+                  AnyGPT
+                </Link>
+                <button 
+                  onClick={() => toast("Contact info coming soon!", { icon: 'ℹ️' })}
+                  className="text-sm font-normal transition-colors text-muted-foreground hover:text-foreground"
+                >
+                  Contact
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </footer>
+
+      </div>
     </div>
   );
 }

@@ -8,7 +8,7 @@ export function Footer() {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div>
-            <h3 className="text-2xl font-bold mb-6">AnyVM Technologies</h3>
+            <h3 className="text-2xl font-bold mb-6">AnyVM Technologies LLC</h3>
             <p className="opacity-70">Making centralized, modern, innovative and open-source cloud services.</p>
           </div>
           
@@ -46,7 +46,7 @@ export function Footer() {
         <Separator className="my-8 bg-white/20" />
         
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <p className="opacity-70">© 2025 AnyVM Technologies. All rights reserved.</p>
+          <p className="opacity-70">© 2025 AnyVM Technologies LLC. All rights reserved.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <Link href="/terms" className="opacity-70 hover:opacity-100">Terms</Link>
             <Link href="/privacy" className="opacity-70 hover:opacity-100">Privacy</Link>

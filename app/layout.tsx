@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import BackgroundWrapper from "./components/BackgroundWrapper";
-import ClientImageOverlay from "./components/ClientImageOverlay";
 
-const dmSans = DM_Sans({
+const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "AnyVM - Open Source Cloud Services",
-  description: "Experience transparent, accessible cloud services without vendor lock-in.",
+  title: "AnyVM Technologies - Coming Soon",
+  description: "Make the cloud open. AnyVM VPS hosting, AnyGPT AI API, AnyWeb proxy, and AnyCode deployment platform launching soon.",
 };
 
 export default function RootLayout({
@@ -23,14 +21,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;700&display=swap" rel="stylesheet" />
+        <link rel="icon" href="/AnyVM-logo.svg" type="image/svg+xml" />
+        <link rel="shortcut icon" href="/AnyVM-logo.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/AnyVM-logo.svg" />
+      </head>
       <body
-        className={`${dmSans.variable} antialiased relative`}
+        className={`${inter.variable} antialiased`}
       >
-        <BackgroundWrapper />
-        <ClientImageOverlay src="/sample.png" />
-        <div className="relative z-10">
-          {children}
-        </div>
+        {children}
       </body>
     </html>
   );
