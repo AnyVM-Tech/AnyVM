@@ -214,7 +214,7 @@ export default function ComingSoon() {
           >
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <p className="text-sm font-normal text-muted-foreground">
-                © 2025 AnyVM Technologies. Building the future of open source cloud.
+                © 2025 AnyVM Technologies. Building the future of open-source.
               </p>
               <div className="flex space-x-6">
                 <Link 

@@ -11,7 +11,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "AnyVM Technologies - Coming Soon",
-  description: "Make the cloud open. AnyVM VPS hosting, AnyGPT AI API, AnyWeb proxy, and AnyCode deployment platform launching soon.",
+  description: "Make the cloud open-source. AnyVM VPS hosting, AnyGPT AI API, AnyWeb proxy, and AnyCode deployment platform launching soon.",
 };
 
 export default function RootLayout({
